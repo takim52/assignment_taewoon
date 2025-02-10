@@ -1,0 +1,40 @@
+*.VC.*
+x64/
+
+# Visual Studio
+.vs/
+.vscode/
+*.user
+*.suo
+*.vcxproj.user
+*.sln.user
+*.db
+
+# 빌드 결과물
+Debug/
+Release/
+*.obj
+*.exe
+*.lib
+*.pdb
+*.ilk
+*.idb
+*.iobj
+
+# 임시 파일
+*.tmp
+*.bak
+*.swp
+
+# 시스템 파일
+Thumbs.db
+Desktop.ini
+
+# 디버깅 및 로깅 파일
+*.log
+*.dmp
+
+# 기타
+_ipch/
+*.sdf
+*.pfx
