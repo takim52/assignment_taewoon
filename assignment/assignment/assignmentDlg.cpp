@@ -52,6 +52,7 @@ END_MESSAGE_MAP()
 
 CassignmentDlg::CassignmentDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_ASSIGNMENT_DIALOG, pParent)
+	, m_nRadius(1)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -59,12 +60,17 @@ CassignmentDlg::CassignmentDlg(CWnd* pParent /*=nullptr*/)
 void CassignmentDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_EDIT_RADIUS, m_nRadius);
+	DDV_MinMaxInt(pDX, m_nRadius, 1, 100);
 }
 
 BEGIN_MESSAGE_MAP(CassignmentDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_WM_DESTROY()
+	ON_EN_CHANGE(IDC_EDIT_RADIUS, &CassignmentDlg::OnChangeEditRadius)
+	ON_BN_CLICKED(IDC_BUTTON_RESET, &CassignmentDlg::OnBnClickedButtonReset)
 END_MESSAGE_MAP()
 
 
@@ -100,6 +106,10 @@ BOOL CassignmentDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
+	m_pDlgImage = new CDlgImage;
+	m_pDlgImage->Create(IDD_CDlgImage, this);
+	m_pDlgImage->setParentDlg(this);
+	m_pDlgImage->ShowWindow(SW_SHOW);
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
@@ -153,3 +163,34 @@ HCURSOR CassignmentDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CassignmentDlg::OnDestroy()
+{
+	CDialogEx::OnDestroy();
+
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	if (m_pDlgImage != nullptr)
+	{
+		delete m_pDlgImage;
+	}
+}
+
+
+void CassignmentDlg::OnChangeEditRadius()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
+	// ENM_CHANGE가 있으면 마스크에 ORed를 플래그합니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_nRadius = GetDlgItemInt(IDC_EDIT_RADIUS);
+}
+
+
+void CassignmentDlg::OnBnClickedButtonReset()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pDlgImage->resetPoints();
+}
