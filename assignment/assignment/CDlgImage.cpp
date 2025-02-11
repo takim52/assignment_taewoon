@@ -32,6 +32,8 @@ void CDlgImage::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CDlgImage, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_LBUTTONDOWN()
+	ON_WM_MOUSEMOVE()
+	ON_WM_LBUTTONUP()
 END_MESSAGE_MAP()
 
 
@@ -95,7 +97,47 @@ void CDlgImage::OnLButtonDown(UINT nFlags, CPoint point)
 		drawCircleFromPoints();
 	}
 
+	// 점 선택 및 드래그 시작
+	int radius = m_pParentDlg->m_nRadius;
+	for (int i = 0; i < m_points.size(); ++i) {
+		if ((point.x - m_points[i].x) * (point.x - m_points[i].x) + (point.y - m_points[i].y) * (point.y - m_points[i].y) <= radius * radius) {
+			m_bDragging = true;
+			m_nSelectedPointIndex = i;
+			SetCapture();
+			break;
+		}
+	}
+
 	CDialogEx::OnLButtonDown(nFlags, point);
+}
+
+void CDlgImage::OnMouseMove(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	if (m_bDragging) {
+		m_points[m_nSelectedPointIndex] = point;
+
+		// 원을 다시 그리기
+		initImage();
+		for (int i = 0; i < m_points.size(); ++i) {
+			drawCircle(m_points[i]);
+		}
+		drawCircleFromPoints();
+	}
+
+	CDialogEx::OnMouseMove(nFlags, point);
+}
+
+
+void CDlgImage::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	if (m_bDragging) {
+		m_bDragging = false;
+		ReleaseCapture();
+	}
+
+	CDialogEx::OnLButtonUp(nFlags, point);
 }
 
 void CDlgImage::drawCircle(CPoint point) {
@@ -176,7 +218,7 @@ void CDlgImage::drawCircleFromPoints() {
 }
 
 void CDlgImage::drawEdgeCircle(CPoint center, int radius) {
-	int edgeSize = 5;
+	int edgeSize = m_pParentDlg->m_nEdgeSize;
 	int rectStartX = center.x - radius;
 	int rectStartY = center.y - radius;
 

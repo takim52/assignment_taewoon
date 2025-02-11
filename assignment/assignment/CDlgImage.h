@@ -31,6 +31,8 @@ private:
 
 	CassignmentDlg* m_pParentDlg;
 	std::vector<CPoint> m_points;
+	bool m_bDragging = false;
+	int m_nSelectedPointIndex;
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
@@ -45,4 +47,6 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 };

@@ -38,4 +38,6 @@ public:
 	afx_msg void OnDestroy();
 	afx_msg void OnChangeEditRadius();
 	afx_msg void OnBnClickedButtonReset();
+	int m_nEdgeSize;
+	afx_msg void OnChangeEditEdgeSize();
 };

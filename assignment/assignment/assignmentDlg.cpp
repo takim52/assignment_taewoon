@@ -53,6 +53,7 @@ END_MESSAGE_MAP()
 CassignmentDlg::CassignmentDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_ASSIGNMENT_DIALOG, pParent)
 	, m_nRadius(1)
+	, m_nEdgeSize(1)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -62,6 +63,8 @@ void CassignmentDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EDIT_RADIUS, m_nRadius);
 	DDV_MinMaxInt(pDX, m_nRadius, 1, 100);
+	DDX_Text(pDX, IDC_EDIT_EDGE_SIZE, m_nEdgeSize);
+	DDV_MinMaxInt(pDX, m_nEdgeSize, 1, 100);
 }
 
 BEGIN_MESSAGE_MAP(CassignmentDlg, CDialogEx)
@@ -71,6 +74,7 @@ BEGIN_MESSAGE_MAP(CassignmentDlg, CDialogEx)
 	ON_WM_DESTROY()
 	ON_EN_CHANGE(IDC_EDIT_RADIUS, &CassignmentDlg::OnChangeEditRadius)
 	ON_BN_CLICKED(IDC_BUTTON_RESET, &CassignmentDlg::OnBnClickedButtonReset)
+	ON_EN_CHANGE(IDC_EDIT_EDGE_SIZE, &CassignmentDlg::OnChangeEditEdgeSize)
 END_MESSAGE_MAP()
 
 
@@ -193,4 +197,16 @@ void CassignmentDlg::OnBnClickedButtonReset()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_pDlgImage->resetPoints();
+}
+
+
+void CassignmentDlg::OnChangeEditEdgeSize()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
+	// ENM_CHANGE가 있으면 마스크에 ORed를 플래그합니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_nEdgeSize = GetDlgItemInt(IDC_EDIT_EDGE_SIZE);
 }
