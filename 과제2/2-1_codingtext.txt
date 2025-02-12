@@ -1,0 +1,10 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int solution(int n, int k) {
+    static int nPrice = 12000;
+    static int kPrice = 2000;
+    return n * nPrice + (k - n / 10) * kPrice;
+}

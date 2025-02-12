@@ -1,0 +1,48 @@
+#include <string>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+double getInclination(int x1, int y1, int x2, int y2) {
+    return (double) (y2 - y1) / (double) (x2 - x1);
+}
+
+bool isEqual(double a, double b, double epsilon = 1e-9) {
+    return abs(a - b) < epsilon;
+}
+
+double getSection(int x1, int y1, double i) {
+    return (double) y1 - i * x1;
+}
+
+int solution(vector<vector<int>> dots) {
+    int x1 = dots[0][0];
+    int x2 = dots[1][0];
+    int x3 = dots[2][0];
+    int x4 = dots[3][0];
+    int y1 = dots[0][1];
+    int y2 = dots[1][1];
+    int y3 = dots[2][1];
+    int y4 = dots[3][1];
+   
+    double i1 = getInclination(x1, y1, x2, y2);
+    double i2 = getInclination(x3, y3, x4, y4);
+    double i3 = getInclination(x1, y1, x3, y3);
+    double i4 = getInclination(x2, y2, x4, y4);
+    double i5 = getInclination(x1, y1, x4, y4);
+    double i6 = getInclination(x2, y2, x3, y3);
+
+    double s1 = getSection(x1, y1, i1);
+    double s2 = getSection(x1, y1, i1);
+    double s3 = getSection(x1, y1, i1);
+    double s4 = getSection(x1, y1, i1);
+    double s5 = getSection(x1, y1, i1);
+    double s6 = getSection(x1, y1, i1);
+    
+    if ((isEqual(i1, i2) && isEqual(s1, s2)) || (isEqual(i3, i4) && isEqual(s3, s4)) || (isEqual(i5, i6) && isEqual(s5, s6))) {
+        return 1;
+    }
+    
+    return 0;
+}

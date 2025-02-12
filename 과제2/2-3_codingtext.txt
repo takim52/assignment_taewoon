@@ -1,0 +1,65 @@
+#include <string>
+#include <vector>
+#include <map>
+#include <cmath>
+#include <algorithm>
+
+using namespace std;
+
+int solution(int a, int b, int c, int d) {
+    map<int, int> resultMap;
+    resultMap.insert({a, 1});
+    
+    vector<int> numbers = {b, c, d};
+    for (int num : numbers) {
+        auto iterator = resultMap.find(num);
+        if (iterator != resultMap.end()) {
+            iterator->second += 1;
+        } else {
+            resultMap.insert({num, 1});
+        }
+    }
+    
+    vector<pair<int, int>> sortedResult(resultMap.begin(), resultMap.end());
+    
+    sort(sortedResult.begin(), sortedResult.end(), [](const pair<int, int>& a, const pair<int, int>& b) {
+        return a.second < b.second;
+    });
+    
+    if (sortedResult.size() == 1) {
+        auto element = sortedResult.begin();
+        return element->first * 1111;
+    }  
+    
+    if (sortedResult.size() == 2) {
+        auto element = sortedResult.rbegin();
+        int maxCount = element->second;
+        int p = element->first;
+        ++element;
+        int q = element->first;
+        
+        if (maxCount == 3) {
+            return pow(10 * p + q, 2);
+        }
+        
+        return (p + q) * (abs(p - q));
+    }
+    
+    if (sortedResult.size() == 3) {
+        auto element = sortedResult.rbegin();
+        ++element;
+        int q = element->first;
+        ++element;
+        int r = element->first;
+        return q * r;
+    }
+    
+    int minNumber = 7;
+    for (auto iter = sortedResult.begin(); iter != sortedResult.end(); ++iter) {
+        if (iter->first < minNumber) {
+            minNumber = iter->first;
+        }
+    }
+    
+    return minNumber;
+}
