@@ -7,6 +7,7 @@
 #include "CDlgImage.h"
 #include "assignmentDlg.h"
 #include <cmath>
+#include <thread>
 
 
 // CDlgImage 대화 상자
@@ -170,6 +171,12 @@ void CDlgImage::setParentDlg(CassignmentDlg* pParent) {
 	m_pParentDlg = pParent;
 }
 
+bool CDlgImage::calculateCircleFromPoints() {
+	CPoint center;
+	int radius;
+	return calculateCircleFromPoints(center, radius);
+}
+
 // 세 점으로 원의 중심과 반지름을 계산하는 함수
 bool CDlgImage::calculateCircleFromPoints(CPoint& center, int& radius) {
 	int x1 = m_points[0].x;
@@ -246,4 +253,43 @@ void CDlgImage::resetPoints() {
 	initImage();
 	m_points.clear();
 	Invalidate();
+}
+
+void CDlgImage::randomMovingThread() {
+	for (int i = 0; i < MAX_RANDON_MOVING_COUNT; ++i) {
+		Sleep(m_nRandomMovingThreadSleep);
+
+		const int maxTring = 100;
+		int tring = 0;
+		bool edgeCircleCreated = false;
+		do {
+			int radius = m_pParentDlg->m_nRadius;
+			for (int i = 0; i < m_points.size(); ++i) {
+				int x = rand() % m_nWidth;
+				int y = rand() % m_nHeight;
+				m_points[i] = CPoint(x, y);
+			}
+			initImage();
+			for (int i = 0; i < m_points.size(); ++i) {
+				drawCircle(m_points[i]);
+			}
+
+			edgeCircleCreated = calculateCircleFromPoints();
+			++tring;
+		} while (!edgeCircleCreated && tring < maxTring);
+
+		if (edgeCircleCreated) {
+			drawCircleFromPoints();
+		}
+	}
+}
+
+bool CDlgImage::randomMoving() {
+	if (m_points.size() < MAX_POINTS) {
+		return false;
+	}
+
+	std::thread _thread0(&CDlgImage::randomMovingThread, this);
+	_thread0.detach();
+	return true;
 }

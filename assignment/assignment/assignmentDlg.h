@@ -40,4 +40,5 @@ public:
 	afx_msg void OnBnClickedButtonReset();
 	int m_nEdgeSize;
 	afx_msg void OnChangeEditEdgeSize();
+	afx_msg void OnBnClickedButtonRandomMoving();
 };

@@ -16,18 +16,23 @@ public:
 	CImage m_image;
 	void setParentDlg(CassignmentDlg* pParent);
 	void resetPoints();
+	bool randomMoving();
 
 private:
 	void drawCircle(CPoint point);
 	void drawCircleFromPoints();
+	bool calculateCircleFromPoints();
 	bool calculateCircleFromPoints(CPoint& center, int& radius);
 	void drawEdgeCircle(CPoint center, int radius);
+	void randomMovingThread();
 
 	static const int m_nWidth = 800;
 	static const int m_nHeight = 600;
 	static const int m_nBpp = 8;
 	static const unsigned short m_grayScale = 0;
 	static const int MAX_POINTS = 3;
+	static const int MAX_RANDON_MOVING_COUNT = 10;
+	static const int m_nRandomMovingThreadSleep = 500;
 
 	CassignmentDlg* m_pParentDlg;
 	std::vector<CPoint> m_points;

@@ -75,6 +75,7 @@ BEGIN_MESSAGE_MAP(CassignmentDlg, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT_RADIUS, &CassignmentDlg::OnChangeEditRadius)
 	ON_BN_CLICKED(IDC_BUTTON_RESET, &CassignmentDlg::OnBnClickedButtonReset)
 	ON_EN_CHANGE(IDC_EDIT_EDGE_SIZE, &CassignmentDlg::OnChangeEditEdgeSize)
+	ON_BN_CLICKED(IDC_BUTTON_RANDOM_MOVING, &CassignmentDlg::OnBnClickedButtonRandomMoving)
 END_MESSAGE_MAP()
 
 
@@ -209,4 +210,15 @@ void CassignmentDlg::OnChangeEditEdgeSize()
 
 	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_nEdgeSize = GetDlgItemInt(IDC_EDIT_EDGE_SIZE);
+}
+
+
+void CassignmentDlg::OnBnClickedButtonRandomMoving()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (!m_pDlgImage->randomMoving()) {
+		CString message;
+		AfxMessageBox(_T("세 점이 없어서 랜덤 이동에 실패 했습니다."));
+	}
+
 }
